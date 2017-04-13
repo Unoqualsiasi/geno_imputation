@@ -1,0 +1,23 @@
+#!/bin/sh
+#SBATCH --ntasks=1              # 1 core(CPU)
+#SBATCH --nodes=1               # Use 1 node
+#SBATCH --job-name=geno_imp  	# sensible name for the job
+#SBATCH --mem=16G                # Default memory per CPU is 5Gb whether you included this option or not. If you would like to use more please adjust this.  Warning: Job will be killed if it exceed 5Gb memory!
+
+module load anaconda
+module load plink2/1.90b3w
+module load R/3.3.2
+
+cd ..
+pwd=$(pwd)
+
+sed -n '/^```bash/,/^```/ p' < README.md | sed 's/^```bash/echo -n "Entering new code block: "; date/' | sed 's/^```//' > readmescript
+sed -i '/^prefix=/s/.*/prefix=/' readmescript
+sed -i "s#^prefix=#prefix=$pwd#" readmescript
+sed -i '/^ftpgeno=/s/.*/ftpgeno=/' readmescript
+sed -i "s#^ftpgeno=#ftpgeno=$pwd/ftpgeno#" readmescript
+
+chmod 755 readmescript
+./readmescript
+
+

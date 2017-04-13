@@ -1,0 +1,27 @@
+#!/bin/bash
+# interactive (prompts for password) script for downloading 
+# the raw genotype data from ftp-server ftpgeno.geno.no
+
+ftpgeno=$(pwd | sed s/scripts$/ftpgeno/) #default location
+
+echo -n "Path to download raw genotype data [$ftpgeno]:"; read ftpgenonew
+if [ "$ftpgenonew" != "" ]; then ftpgeno=$ftpgenonew; fi
+mkdir -p $ftpgeno
+cd $ftpgeno
+
+echo "Downloading raw genotype data in $ftpgeno"
+time wget -nv -nH -r ftp://avlgeno@ftpgeno.geno.no/*Raw_Data_Files --ask-password      	#get genotypes and pedigree files
+cd Raw_Data_Files
+ln -s affy_raw/* .
+
+echo -n "Unzipping raw genotype data in $ftpgeno"
+time gunzip -v *.gz
+
+# Split the collections, ~2 min
+pwd
+ls
+awk '/^\[Header\]/{x=FILENAME"."++i} {print >x;}' FinalReport_54kV2_collection_ed1.txt
+awk '/^\[Header\]/{x=FILENAME"."++i} {print >x;}' FinalReport_54kV2_collection2.txt
+mv FinalReport_54kV2_collection_ed1.txt Collection_FinalReport_54kV2_collection_ed1.txt
+mv FinalReport_54kV2_collection2.txt Collection_FinalReport_54kV2_collection2.txt
+cd ../../..

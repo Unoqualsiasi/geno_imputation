@@ -5,7 +5,7 @@ date: "24 8 2016"
 ---
 
 **Note**
-* This script doesn't work on Windows machines. It works on both Linux and Mac OS.
+* This script doesn't work on Windows machines. It works on both Linux and Mac OS. If you are using it on linux change [[:<:]] with \b 
 
 * You will need the .raw files (one per chromosome)
 

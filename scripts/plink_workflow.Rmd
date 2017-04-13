@@ -2,6 +2,8 @@
 
 * The workflow starts with all the data already converted into PLINK format using Harald's scripts
 * The collectioned1 and collectioned2 files are already split (see Tim's script for that)
+* The file hetero_remove was created using the script 'hetero_geno' in this repository (scripts folder)
+* The file  merge1.missnp is created using this trick. Merge the illumina files with the affymetrix files and PLINK will produce a list of snps that are not compatible (the SNPs you will need to flip). This list is the  merge1.missnp file.
 
 ```bash
 #This is the pipeline i used with PLINK to edit Geno data
